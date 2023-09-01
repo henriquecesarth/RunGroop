@@ -31,17 +31,18 @@ namespace RunGroopWebApp.Repository
 
         public async Task<Club> GetByIdAsync(int id)
         {
-            return await _context.Clubs.Include(c => c.Address).FirstOrDefault(c => c.Id == id);
+            return await _context.Clubs.Include(c => c.Address).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<IEnumerable<Club>> GetClubByCity(string city)
+        public async Task<IEnumerable<Club>> GetClubByCity(string city)
         {
-            throw new NotImplementedException();
+            return await _context.Clubs.Where(c => c.Address.City.Contains(city)).ToListAsync();
         }
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
 
         public bool Update(Club club)
